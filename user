@@ -1,0 +1,42 @@
+import perm,json
+DB_PATH = "/tmp/usr.json"
+class passwordEntry:
+    name =""
+    passwd = ""
+    def __init__(self,name,passwd):
+        self.name = name
+        self.passwd = passwd
+
+class User:
+    login = ""
+    passwd = ""
+    permission = perm.USER
+    passwords = []
+
+    def __init__(self,login,passwd,perm=perm.USER):
+        self.login = login
+        self.passwd = encodePasswd(passwd)
+        self.permission = perm
+
+    def addPasswd(self,name,passwd):
+        passwd = encodePasswd(passwd)
+        self.passwords.append(passwordEntry(name,passwd))
+
+    def encodePasswd(passwd):
+        #TODO
+        return passwd
+    
+    def save(self,users):
+        usr = dict(self)
+        if (self in users):
+            users[self] = self
+        else:
+            users.append(self)
+        f = open(DB_PATH,"w")
+		json.dump(usr, f)  
+
+    def load():
+        f = open(DB_PATH,"r")
+        users = json.load(f)
+        return users
+
